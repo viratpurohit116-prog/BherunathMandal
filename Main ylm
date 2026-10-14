@@ -1,0 +1,38 @@
+name: Build Bherunath Mandal APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+- name: Accept Android SDK licenses
+  run: yes | sdkmanager --licenses
+      - name: Install Android SDK
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Install Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Find project ZIP
+        run: |
+          find . -name '*.zip'
+
+      - name: Stop if project is not extracted
+        run: |
+          echo "Next step: configure the Android project folder"
